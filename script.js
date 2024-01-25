@@ -1,8 +1,8 @@
 let fields = [
     null,
     null,
-    'o',
-    'x',
+    null,
+    null,
     null,
     null,
     null,
@@ -11,6 +11,8 @@ let fields = [
 ]
 
 let currentPlayer = 'o'; // Füge currentPlayer hinzu
+
+
 
 function init() {
     render();
@@ -55,21 +57,79 @@ function renderCell(index) {
   }
 }
 
+// Füge einen Aufruf von checkWinner() in die fieldInsert-Funktion ein, um nach jedem Zug zu überprüfen
 function fieldInsert(index) {
   if (!fields[index]) {
       fields[index] = currentPlayer;
-      renderCell(index); // Update nur das angeklickte Zelle
-      currentPlayer = currentPlayer === 'o' ? 'x' : 'o'; // Wechsle den Spieler
+      renderCell(index);
+      checkWinner(); // Überprüfe, ob ein Spieler gewonnen hat
+      currentPlayer = currentPlayer === 'o' ? 'x' : 'o';
   }
 }
-  
+
+function checkWinner() {
+  const winningCombinations = [
+      // Hier kannst du alle möglichen Gewinnkombinationen definieren
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+  ];
+
+  for (const combination of winningCombinations) {
+      const [a, b, c] = combination;
+      if (fields[a] && fields[a] === fields[b] && fields[a] === fields[c]) {
+          // Ein Spieler hat gewonnen
+          alert(`Spieler ${fields[a]} hat gewonnen!`);
+          disableClicks(); // Deaktiviere die onclick-Funktion für alle Zellen
+          drawWinningLine(combination); // Zeichne eine Linie über die Gewinnkombination
+          return;
+      }
+  }
+
+  // Überprüfe auf Unentschieden
+  if (isBoardFull()) {
+      alert('Unentschieden!');
+      disableClicks(); // Deaktiviere die onclick-Funktion für alle Zellen
+  }
+}
+
+
+function disableClicks() {
+  // Deaktiviere die onclick-Funktion für alle Zellen
+  const cells = document.querySelectorAll('[onclick^="fieldInsert"]');
+  cells.forEach(function(cell) {
+      cell.onclick = null;
+  });
+}
+
+function isBoardFull() {
+  // Überprüfe, ob das Spielfeld voll ist
+  return fields.every(function(cell) {
+      return cell !== null;
+  });
+}
+
+
+function drawWinningLine(combination) {
+  // Zeichne eine Linie über die Gewinnkombination
+  // Hier könntest du Logik hinzufügen, um visuell die Gewinnkombination darzustellen
+  // Zum Beispiel könntest du die Linie über die entsprechenden <td>-Elemente zeichnen.
+  // Implementiere dies entsprechend deinen Design-Präferenzen.
+  // ...
+}
+
 
 function generateCircleHtml() {
-  return `<svg height="48" width="48" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="24" cy="24" r="20" stroke="#00b0e7" stroke-width="8" fill="transparent" stroke-opacity="0">
-                  <animate attributeName="stroke-opacity" from="0" to="1" dur="0.25s" fill="freeze"/>
-              </circle>
-          </svg>`;
+    return `<svg height="48" width="48" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="24" cy="24" r="20" stroke="#00b0e7" stroke-width="8" fill="transparent" stroke-opacity="0">
+                    <animate attributeName="stroke-opacity" from="0" to="1" dur="0.25s" fill="freeze"/>
+                </circle>
+            </svg>`;
 }
 
 

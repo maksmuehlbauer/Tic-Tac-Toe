@@ -11,6 +11,7 @@ body {
   #content {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
   table {
@@ -38,4 +39,32 @@ body {
     padding: 1rem;
     border: 5px solid white;
   }
+
+  .winning-line {
+    position: absolute;
+    height: 5px;
+    background-color: red; /* Ändere die Farbe nach Bedarf */
+    transform-origin: 0% 50%;
+    pointer-events: none; /* Damit die Linie keine Klicks blockiert */
+}
+
+#button-div button {
+    background-color: #c01010;
+    padding: 16px 32px;
+    margin: 24px 0;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+#button-div button:hover {
+    background-color: #ff2b2b;;
+
+}
 
